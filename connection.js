@@ -48,7 +48,17 @@ async function createMultipleVideos(client, newVideos) {
 }
 
 async function getVideosByTopic(client, topic) {
-  const result = await client.db("baseball").collection("videos").find({ "topic": topic });
+  const cursor = client.db("baseball").collection("videos").find({ topic: topic });
 
-  console.log(result);
+  const result = await cursor.toArray();
+
+  if (result.length > 0) {
+    console.log(`${result.length} ${topic} video(s) found`)
+
+    result.forEach(res => {
+      console.log(res.title);
+    });
+  } else {
+    console.log(`No ${topic} videos found`);
+  }
 }
