@@ -62,3 +62,12 @@ async function getVideosByTopic(client, topic) {
     console.log(`No ${topic} videos found`);
   }
 }
+
+async function renameMediaType(client) {
+  const result = await client.db("baseball").collection("videos")
+                      .updateMany({ mediaType: { $exists: true } },
+                                  { $rename: { mediaType: "media_type" } });
+
+  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
+  console.log(`${result.modifiedCount} document(s) was/were updated.`);
+}
